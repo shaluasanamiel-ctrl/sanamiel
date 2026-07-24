@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchAdminPaymentMethods, crearPaymentMethod, actualizarPaymentMethod, eliminarPaymentMethod } from '../../api.js'
+import { fetchAdminPaymentMethods, crearPaymentMethod, actualizarPaymentMethod, eliminarPaymentMethod, uploadBase64 } from '../../api.js'
 
 export default function AdminPayments() {
   const [methods, setMethods] = useState([])

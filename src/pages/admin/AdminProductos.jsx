@@ -10,7 +10,7 @@ export default function AdminProductos() {
   const [form, setForm] = useState({
     nombre: '', slug: '', descripcion: '', precio: '', precio_anterior: '', stock: '0',
     tipo: 'fragancia', material: '', genero: '', categoria_id: '', volumen_ml: '', notas_olfativas: '',
-    destacado: false, nuevo: false,
+    destacado: false, nuevo: false, activo: true,
   })
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function AdminProductos() {
       precio_anterior: form.precio_anterior ? parseFloat(form.precio_anterior) : null,
       stock: parseInt(form.stock) || 0,
       volumen_ml: form.volumen_ml ? parseFloat(form.volumen_ml) : null,
+      activo: form.activo !== false,
     }
     if (editing) {
       const updated = await actualizarProducto(editing, data)
@@ -39,7 +40,7 @@ export default function AdminProductos() {
   const resetForm = () => {
     setEditing(null)
     setTab('form')
-    setForm({ nombre: '', slug: '', descripcion: '', precio: '', precio_anterior: '', stock: '0', tipo: 'fragancia', material: '', genero: '', categoria_id: '', volumen_ml: '', notas_olfativas: '', destacado: false, nuevo: false })
+    setForm({ nombre: '', slug: '', descripcion: '', precio: '', precio_anterior: '', stock: '0', tipo: 'fragancia', material: '', genero: '', categoria_id: '', volumen_ml: '', notas_olfativas: '', destacado: false, nuevo: false, activo: true })
   }
 
   const startEdit = (p) => {
@@ -49,7 +50,7 @@ export default function AdminProductos() {
       precio_anterior: p.precio_anterior ? String(p.precio_anterior) : '', stock: String(p.stock),
       tipo: p.tipo, material: p.material || '', genero: p.genero || '', categoria_id: p.categoria_id || '',
       volumen_ml: p.volumen_ml ? String(p.volumen_ml) : '', notas_olfativas: p.notas_olfativas || '',
-      destacado: p.destacado || false, nuevo: p.nuevo || false,
+      destacado: p.destacado || false, nuevo: p.nuevo || false, activo: p.activo !== false,
     })
     setTab('form')
   }
@@ -136,6 +137,7 @@ export default function AdminProductos() {
             <input type="text" placeholder="Notas olfativas (ej: jazmín, rosa)" value={form.notas_olfativas} onChange={e => setForm({...form, notas_olfativas: e.target.value})} className="border border-sand rounded px-4 py-3" />
             <label className="flex items-center gap-2"><input type="checkbox" checked={form.destacado} onChange={e => setForm({...form, destacado: e.target.checked})} /> Destacado</label>
             <label className="flex items-center gap-2"><input type="checkbox" checked={form.nuevo} onChange={e => setForm({...form, nuevo: e.target.checked})} /> Nuevo</label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={form.activo !== false} onChange={e => setForm({...form, activo: e.target.checked})} /> Publicado en la tienda</label>
           </div>
           <div className="flex gap-3 mt-4">
             <button onClick={handleSave} className="bg-ink text-white px-6 py-3 text-[12px] font-bold tracking-[.12em] uppercase">{editing ? 'Guardar cambios' : 'Crear producto'}</button>
