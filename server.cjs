@@ -8,6 +8,7 @@ const { Pool } = require('pg');
 const fs = require('fs');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
 const dbUrl = (process.env.DATABASE_URL || 'postgresql://localhost:5432/sanamiel').replace(/\?.*$/, '');
@@ -33,7 +34,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: !!process.env.DATABASE_URL,
+    secure: process.env.NODE_ENV === 'production' || !!process.env.DATABASE_URL,
     httpOnly: true,
     sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000,
