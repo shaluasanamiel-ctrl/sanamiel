@@ -265,6 +265,13 @@ app.post('/api/upload', requireAuth, upload.single('foto'), (req, res) => {
   res.json({ url: `/uploads/${req.file.filename}` });
 });
 
+const distPath = path.join(__dirname, 'dist');
+app.use(express.static(distPath));
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) return;
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 async function start() {
   try {
     await migrate();
