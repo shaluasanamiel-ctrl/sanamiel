@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fbf8f4;
+  --color-ink: #25211f;
+  --color-sand: #eee5d9;
+  --color-gold: #b78d4a;
+  --color-wine: #6b3941;
+  --color-muted: #716a64;
+  --font-display: "Playfair Display", serif;
+  --font-sans: "DM Sans", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-cream text-ink font-sans m-0;
+  }
+  a { @apply no-underline text-inherit; }
+}
