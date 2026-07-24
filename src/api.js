@@ -3,6 +3,7 @@ const API = '/api'
 export async function fetchJSON(url, options = {}) {
   const res = await fetch(`${API}${url}`, {
     headers: { 'Content-Type': 'application/json', ...options.headers },
+    credentials: 'include',
     ...options,
   })
   if (!res.ok) {

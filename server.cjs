@@ -16,15 +16,29 @@ const pool = new Pool({
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
 });
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173', credentials: true }));
+const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:5173';
+app.use(cors({
+  origin: corsOrigin === '*' ? true : corsOrigin,
+  credentials: true,
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => { console.log(`${req.method} ${req.path}`); next(); });
+}
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'sanamiel-secret-dev',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: !!process.env.DATABASE_URL, maxAge: 24 * 60 * 60 * 1000 },
+  cookie: {
+    secure: !!process.env.DATABASE_URL,
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000,
+    path: '/',
+  },
 }));
 
 const upload = multer({ dest: 'uploads/' });
