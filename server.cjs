@@ -9,8 +9,9 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const dbUrl = (process.env.DATABASE_URL || 'postgresql://localhost:5432/sanamiel').replace(/\?.*$/, '');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/sanamiel',
+  connectionString: dbUrl,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
 });
 
